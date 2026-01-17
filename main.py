@@ -2,7 +2,8 @@
 
 import pygame
 import sys
-#from map import Level
+from map import MapGen
+import map
 from player import Player
 
 
@@ -14,13 +15,17 @@ clock = pygame.time.Clock()
 FPS = 60
 
 # screen and game conf
-screenX, screenY = 512, 512
-screen = pygame.display.set_mode((screenX, screenY))
+screenXY = 512
+screen = pygame.display.set_mode((screenXY, screenXY))
 #pygame.display.set_icon(pygame.image.load(""))
 pygame.display.set_caption("My First Platformer Game")
 
+# player
 player = Player(25, 25, 50, 75)
 
+# Map Generation
+map = MapGen(map.level1, screen)
+map.designLevel()
 # functions
 
 
@@ -35,7 +40,9 @@ def main():
     running = True
     while running:
         clock.tick(FPS)
-        player.drawPlayer(screen)
+        screen.fill((90, 160, 255))
+        map.drawMap()
+        #player.drawPlayer(screen)
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 QUIT_GAME()

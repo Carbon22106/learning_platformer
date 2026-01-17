@@ -1,30 +1,44 @@
 import pygame
-from map import Level
-from map import Platform
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
-clock = pygame.time.Clock()
 
-level = Level()   # create map object
+# 0 = air
+# 1 = solid platform
 
-p1 = Platform(200, 150, 150, 120)
-p2 = Platform(10, 280, 250, 120)
-p3 = Platform(250, 450, 150, 120)
+level1 = [
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1
+]
 
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+class MapGen:
+    def __init__(self, Level, Screen):
+        self.level = Level
+        self.screen = Screen
+        self.screenSize = Screen.get_size()[0]
 
-    screen.fill((30, 30, 30))
-    level.draw(screen)
-    Platform.draw(p1, screen)
-    Platform.draw(p2, screen)
-    Platform.draw(p3, screen)
+    def guideline(self):
+        self.tiles = []
 
-    pygame.display.flip()
-    clock.tick(60)
+        for index, value in enumerate(self.level):
+            if value == 1:
+                x = (index % 16) * 32
+                y = (index // 16) * 32
+                self.tiles.append(pygame.Rect(x, y, 32, 32))
 
-pygame.quit()
+    def drawMap(self):
+        for i in range(len(self.tiles)):
+            pygame.draw.rect(self.screen, (110, 110, 110), self.tiles[i])
